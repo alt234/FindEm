@@ -12,7 +12,19 @@ class Game < Chingu::Window
         @input = { :escape => :exit }
         #@cursor = false
         @cursor = Gosu::Image.new(self, 'media/mouse.png')
-        @block = Block.create(:x => $window.width/2, :y => $window.height/2)
+        
+        rows = 4
+        columns = 4
+
+        for i in 0..rows
+            for j in 0..columns
+                xPos = j * 90
+                yPos = i * 90
+                margin = 100
+
+                @block = Block.create(:x => xPos+margin, :y => yPos+margin)
+            end
+        end
     end
 
     def draw
