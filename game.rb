@@ -50,13 +50,12 @@ class Block < Chingu::GameObject
     def update
         if @spin
             @image = @animation[:spin].next
-        #else
-         #   @image = @animation.first
         end
         
         if @image == @animation.last
             @spin = false
             @image = @animation.first
+            @animation[:spin].reset
         end
     end
 end
