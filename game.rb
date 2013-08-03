@@ -16,19 +16,20 @@ class Game < Chingu::Window
         rows = 4
         columns = 4
 
-        for i in 0..rows
-            for j in 0..columns
+        for i in 1..rows
+            for j in 1..columns
                 xPos = j * 90
                 yPos = i * 90
                 margin = 100
 
-                @block = Block.create(:x => xPos+margin, :y => yPos+margin)
+                @block = Block.create(:x => xPos+margin, :y => yPos+margin) 
             end
         end
     end
 
     def draw
         super
+
         @cursor.draw(self.mouse_x, self.mouse_y, 100)
     end
 
@@ -48,7 +49,21 @@ class Block < Chingu::GameObject
         @animation = Chingu::Animation.new(:file => "media/sheet_25x30.bmp")
         @animation.frame_names = { :spin => 0..4 }
         @image = @animation.first
-        @spin = false
+        #@spin = false
+
+        @letter = ["A", "B", "C", "D"].sample
+        
+        @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4, :y => self.y - self.height/4, :color => Color::WHITE, :zorder => 1000)
+        @text.factor_x = 1
+        @text.factor_y = 1
+
+        @game_started = false
+
+        during(3000) { @spin = false }.then { 
+            @text.destroy
+            @spin = true 
+        }
+
         update
     end
 
@@ -56,6 +71,7 @@ class Block < Chingu::GameObject
         if $window.mouse_x >= (self.x - self.width/2) && $window.mouse_x <= (self.x + self.width/2) &&
             $window.mouse_y >= (self.y - self.height/2) && $window.mouse_y <= (self.y + self.height/2)
             @spin = true
+            @game_started = true
         end
     end
 
@@ -68,6 +84,12 @@ class Block < Chingu::GameObject
             @spin = false
             @image = @animation.first
             @animation[:spin].reset
+            
+            if @game_started
+                @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4, :y => self.y - self.height/4, :color => Color::WHITE)
+                @text.factor_x = 1
+                @text.factor_y = 1
+            end
         end
     end
 end
