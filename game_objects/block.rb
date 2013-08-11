@@ -49,7 +49,7 @@ class Block < Chingu::GameObject
     end
     
     def is_flipped? 
-        @flipped
+        @flipped || @flip
     end
 
     def flipped=(flipped)
