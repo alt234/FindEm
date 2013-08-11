@@ -66,5 +66,9 @@ class PlayState < Chingu::GameState
     def finalize
         $game_started = false
         @first_block = nil
+    
+        Block.all.each do |block|
+            block.flipped = false
+        end
     end
 end 

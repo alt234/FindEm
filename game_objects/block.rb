@@ -52,6 +52,10 @@ class Block < Chingu::GameObject
         @flipped
     end
 
+    def flipped=(flipped)
+        @flipped = flipped
+    end
+
     def flip=(flip)
         @flip = flip
     end
