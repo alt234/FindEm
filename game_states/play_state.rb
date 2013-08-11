@@ -26,8 +26,8 @@ class PlayState < Chingu::GameState
 
         Block.all.each do |block|
             during(3000) {}.then {
-                block.delete_text
-                block.is_spinning = true
+                block.text.destroy
+                block.flip = true
             }
         end
     end
@@ -35,7 +35,7 @@ class PlayState < Chingu::GameState
     def released_left_mouse_button
         if @first_block == nil
             Block.all.each do |block|
-                if block.is_flipped
+                if block.is_flipped?
                     @first_block = block
                 end
             end
@@ -44,11 +44,11 @@ class PlayState < Chingu::GameState
 
     def end_turn
         Block.all.each do |block|
-            unless block.is_flipped
-                block.is_spinning = true
+            unless block.is_flipped?
+                block.flip = true
             end
 
-            if block.letter == @first_block.letter
+            if block.text.text == @first_block.text.text
                 block.text.color = Color::BLUE
             else
                 block.text.color = Color::RED
