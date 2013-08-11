@@ -26,10 +26,10 @@ class PlayState < Chingu::GameState
 
         #ResetButton.create(:x => 600, :y => 100)
 
+		review_time = 1500 + 500 * @level
         Block.all.each do |block|
-            during(1500) {}.then {
+            during(review_time) {}.then {
                 block.text.destroy
-				#block.text.alpha = 0
 				block.flipping = true
             }
         end
@@ -45,6 +45,7 @@ class PlayState < Chingu::GameState
             Block.all.each do |block|
                 if block.is_flipped?
                     @first_block = block
+					puts "Level: #{ @level }"
 					puts "First block: #{ @first_block.text.text }"
 				end
             end
