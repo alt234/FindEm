@@ -35,17 +35,29 @@ class PlayState < Chingu::GameState
     end
 
     def released_left_mouse_button
-        if @first_block == nil
+    end
+
+	def update
+    	super
+
+		if $game_started && @first_block == nil
             Block.all.each do |block|
                 if block.is_flipped?
                     @first_block = block
+					puts @first_block.text.text
 				end
             end
         end
-    end
+	end
 
-    def start_turn
-        push_game_state(PlayState.new(:level => @level+1, :rows => @rows+1, :columns => @columns+1))
+    def start_turn 
+        $game_started = false
+        @first_block = nil
+        Block.all.each do |block|
+			block.destroy
+		end
+		
+		push_game_state(PlayState.new(:level => @level+1, :rows => @rows+1, :columns => @columns+1))
     end
 
     def end_turn
@@ -65,19 +77,10 @@ class PlayState < Chingu::GameState
 			end
         end
 
-        #unflipped_blocks.each do |block|
-         #   if block.text.text == @first_block.text.text
-          #      block.text.color = Color::GREEN
-          #  end
-        #end
-    end
-
-    def finalize
-        $game_started = false
-        @first_block = nil
-    
-        Block.all.each do |block|
-            block.flipped = false
+        unflipped_blocks.each do |block|
+            if block.text.text == @first_block.text.text
+                block.text.color = Color::GREEN
+            end
         end
     end
 end 
