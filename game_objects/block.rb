@@ -17,12 +17,6 @@ class Block < Chingu::GameObject
         @text.factor_x = 1
         @text.factor_y = 1
 
-        during(3000) { @spin = false }.then { 
-            @text.destroy
-            @spin = true 
-            #$game_started = true
-        }
-
         update
     end
 
@@ -31,8 +25,20 @@ class Block < Chingu::GameObject
             $window.mouse_y >= (self.y - self.height/2) && $window.mouse_y <= (self.y + self.height/2)
             @spin = true
             @flipped = true
-            #$game_started = true
+            
+            unless $game_started
+                $game_started = true
+                @first_letter = @letter
+            end
         end
+    end
+
+    def first_letter
+        @first_letter
+    end
+
+    def letter
+        @letter
     end
 
     def is_flipped=(flipping)
@@ -51,6 +57,10 @@ class Block < Chingu::GameObject
         @text.destroy
     end
 
+    def text
+        @text
+    end
+
     def update
         if @spin
             @image = @animation[:spin].next
@@ -61,11 +71,11 @@ class Block < Chingu::GameObject
             @image = @animation.first
             @animation[:spin].reset
             
-            #if $game_started
-            #    @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE)
-            #    @text.factor_x = 1
-            #    @text.factor_y = 1
-            #end
+            if $game_started
+                @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE)
+                @text.factor_x = 1
+                @text.factor_y = 1
+            end
         end
     end
 

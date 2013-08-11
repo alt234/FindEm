@@ -4,9 +4,9 @@ require 'chingu'
 include Gosu
 include Chingu
 
+require './game_states/play_state.rb'
 require './game_objects/block.rb'
 require './game_objects/reset_button.rb'
-require './game_states/play_state.rb'
 
 class Game < Chingu::Window
     def initialize
