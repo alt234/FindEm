@@ -5,7 +5,7 @@ class PlayState < Chingu::GameState
     def initialize(options = {})
         super
 
-        self.input = [:release_left_mouse_button, :e => :end_turn]
+        self.input = [:released_left_mouse_button => :released_left_mouse_button, :e => :end_turn]
 
         @first_block_flipped = false
 
@@ -33,14 +33,25 @@ class PlayState < Chingu::GameState
     end
 
     def released_left_mouse_button
-
+        if @first_block == nil
+            Block.all.each do |block|
+                if block.is_flipped
+                    @first_block = block
+                end
+            end
+        end
     end
 
     def end_turn
         Block.all.each do |block|
             unless block.is_flipped
                 block.is_spinning = true
+            end
 
+            if block.letter == @first_block.letter
+                block.text.color = Color::BLUE
+            else
+                block.text.color = Color::RED
             end
         end
     end
