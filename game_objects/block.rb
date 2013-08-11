@@ -8,8 +8,6 @@ class Block < Chingu::GameObject
         @animation = Chingu::Animation.new(:file => "media/sheet_25x30.bmp")
         @animation.frame_names = { :flip => 0..4 }
         @image = @animation.first
-        @flipped = false
-        @flip = false
 
         @letter = ["A", "B", "C", "D"].sample
 

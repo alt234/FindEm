@@ -16,7 +16,7 @@ class Game < Chingu::Window
         @input = { :escape => :exit }
         @cursor = Gosu::Image.new(self, 'media/mouse.png')
     
-        push_game_state(PlayState.new)
+        push_game_state(PlayState.new(:level => 1, :rows => 2, :columns => 2))
     end
 
     def draw
