@@ -27,9 +27,10 @@ class PlayState < Chingu::GameState
         #ResetButton.create(:x => 600, :y => 100)
 
         Block.all.each do |block|
-            during(2500) {}.then {
+            during(1500) {}.then {
                 block.text.destroy
-                block.flip = true
+				#block.text.alpha = 0
+				block.flipping = true
             }
         end
     end
@@ -44,10 +45,19 @@ class PlayState < Chingu::GameState
             Block.all.each do |block|
                 if block.is_flipped?
                     @first_block = block
-					puts @first_block.text.text
+					puts "First block: #{ @first_block.text.text }"
 				end
             end
         end
+
+		unless @unflipped_blocks == nil
+			@unflipped_blocks.each do |block|
+				if block.is_flipped? && block.text.text == @first_block.text.text
+					block.text.color = Color::YELLOW
+					@unflipped_blocks.delete(block)
+				end
+			end
+		end
 	end
 
     def start_turn 
@@ -61,11 +71,11 @@ class PlayState < Chingu::GameState
     end
 
     def end_turn
-        unflipped_blocks = []
+		@unflipped_blocks = []
         Block.all.each do |block|
             unless block.is_flipped?
-                unflipped_blocks << block
-                block.flip = true
+                @unflipped_blocks << block
+                block.flipping = true
             end
             
 		    unless @first_block == nil	
@@ -75,12 +85,6 @@ class PlayState < Chingu::GameState
 					block.text.color = Color::RED
 				end
 			end
-        end
-
-        unflipped_blocks.each do |block|
-            if block.text.text == @first_block.text.text
-                block.text.color = Color::GREEN
-            end
         end
     end
 end 

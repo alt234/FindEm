@@ -21,8 +21,8 @@ class Block < Chingu::GameObject
     def released_left_mouse_button
         if $window.mouse_x >= (self.x - self.width/2) && $window.mouse_x <= (self.x + self.width/2) &&
             $window.mouse_y >= (self.y - self.height/2) && $window.mouse_y <= (self.y + self.height/2)
-            @flip = true
-            @flipped = true
+            @flipping = true
+            @flipped = false
             
             unless $game_started
                 $game_started = true
@@ -31,12 +31,12 @@ class Block < Chingu::GameObject
     end
 
     def update
-        if @flip
+        if @flipping
             @image = @animation[:flip].next
         end
         
         if @image == @animation.last
-            @flip = false
+            @flipping = false
             @image = @animation.first
             @animation[:flip].reset
             
@@ -44,20 +44,21 @@ class Block < Chingu::GameObject
                 @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE)
                 @text.factor_x = 1
                 @text.factor_y = 1
+                @flipped = true
             end
         end
     end
     
     def is_flipped? 
-        @flipped || @flip
+        @flipped
     end
 
     def flipped=(flipped)
         @flipped = flipped
     end
 
-    def flip=(flip)
-        @flip = flip
+    def flipping=(flipping)
+        @flipping = flipping
     end
 
     def text
