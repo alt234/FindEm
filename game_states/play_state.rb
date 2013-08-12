@@ -26,7 +26,7 @@ class PlayState < Chingu::GameState
 
         #ResetButton.create(:x => 600, :y => 100)
 
-		review_time = 1500 + 500 * @level
+		review_time = 500 + 500 * @level
         Block.all.each do |block|
             during(review_time) {}.then {
                 block.text.destroy
@@ -68,7 +68,17 @@ class PlayState < Chingu::GameState
 			block.destroy
 		end
 		
-		push_game_state(PlayState.new(:level => @level+1, :rows => @rows+1, :columns => @columns+1))
+		level = @level+1
+		rows = @rows
+		columns = @columns
+
+		if level % 2 == 0
+			columns += 1 
+		else 
+			rows += 1
+		end	
+
+		push_game_state(PlayState.new(:level => level, :rows => rows, :columns => columns))
     end
 
     def end_turn
