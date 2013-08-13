@@ -6,10 +6,10 @@ class PlayState < Chingu::GameState
         super
 
         self.input = [
-            :released_left_mouse_button => :released_left_mouse_button, 
             :s => :start_turn,
             :e => :end_turn
         ]
+
         @level = options[:level]
         @rows = options[:rows]
         @columns = options[:columns]
@@ -18,30 +18,27 @@ class PlayState < Chingu::GameState
             for j in 1..@columns
                 xPos = j*90
                 yPos = i*90
-                margin = 20
 
-                Block.create(:x => xPos+margin, :y => yPos+margin)
+                Block.create(:x => xPos, :y => yPos)
             end
         end
 
         #ResetButton.create(:x => 600, :y => 100)
 
-		review_time = 500 + 500 * @level
+		review_time = 2250;
+		#review_time = 1000 + 500 * @level
         Block.all.each do |block|
             during(review_time) {}.then {
-                block.text.destroy
+				block.text.destroy!
 				block.flipping = true
             }
         end
     end
 
-    def released_left_mouse_button
-    end
-
 	def update
     	super
 
-		if $game_started && @first_block == nil
+		if $game_started && @first_block.nil?
             Block.all.each do |block|
                 if block.is_flipped?
                     @first_block = block
@@ -51,7 +48,7 @@ class PlayState < Chingu::GameState
             end
         end
 
-		unless @unflipped_blocks == nil
+		unless @unflipped_blocks.nil?
 			@unflipped_blocks.each do |block|
 				if block.is_flipped? && block.text.text == @first_block.text.text
 					block.text.color = Color::YELLOW
@@ -65,7 +62,7 @@ class PlayState < Chingu::GameState
         $game_started = false
         @first_block = nil
         Block.all.each do |block|
-			block.destroy
+			block.destroy!
 		end
 		
 		level = @level+1
@@ -89,7 +86,7 @@ class PlayState < Chingu::GameState
                 block.flipping = true
             end
             
-		    unless @first_block == nil	
+		    unless @first_block.nil?	
 				if block.text.text == @first_block.text.text
 					block.text.color = Color::BLUE
 				else
@@ -98,4 +95,4 @@ class PlayState < Chingu::GameState
 			end
         end
     end
-end 
+end
