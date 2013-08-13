@@ -4,6 +4,7 @@ require 'chingu'
 include Gosu
 include Chingu
 
+require './game_states/review_state.rb'
 require './game_states/play_state.rb'
 require './game_objects/block.rb'
 require './game_objects/reset_button.rb'
@@ -16,7 +17,7 @@ class Game < Chingu::Window
         @input = { :escape => :exit }
         @cursor = Gosu::Image.new(self, 'media/mouse.png')
     
-        push_game_state(PlayState.new(:level => 1, :rows => 2, :columns => 2))
+        push_game_state(ReviewState.new(:level => 1, :rows => 2, :columns => 2))
     end
 
     def draw

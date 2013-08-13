@@ -4,16 +4,19 @@ class Block < Chingu::GameObject
         super
 
         self.input = [:released_left_mouse_button]
-
+        
         @animation = Chingu::Animation.new(:file => "media/sheet_25x30.bmp")
         @animation.frame_names = { :flip => 0..4 }
         @image = @animation.first
 
-        @letter = ["A", "B", "C", "D"].sample
+        if options[:show_letters]
+            @letter = ["A", "B", "C", "D"].sample
 
-        @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE, :zorder => 1000)
-        @text.factor_x = 1
-        @text.factor_y = 1
+            @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE, :zorder => 1000)
+            @text.factor_x = 1
+            @text.factor_y = 1
+            @flipped = true
+        end
 
         update
     end
@@ -39,6 +42,7 @@ class Block < Chingu::GameObject
         
         if @image == @animation.last
             @flipping = false
+            @flipped = false
             @image = @animation.first
             @animation[:flip].reset
             
@@ -49,17 +53,17 @@ class Block < Chingu::GameObject
                 @flipped = true 
             end
             
-            unless @review_ended
-                all_hidden = true
-                Block.all.each do |block|
-                    if block.is_flipped?
-                        all_hidden = false
-                        break
-                    end
-                end
+            #unless @review_ended
+                #all_hidden = true
+                #Block.all.each do |block|
+                 #   if block.is_flipped?
+                  #      all_hidden = false
+                   #     break
+                   # end
+                #end
 
-                if all_hidden then @review_ended = true end
-            end
+            #    if all_hidden then @review_ended = true end
+            #end
         end
     end
     
@@ -73,6 +77,10 @@ class Block < Chingu::GameObject
 
     def flipping=(flipping)
         @flipping = flipping
+    end
+    
+    def is_flipping?
+        @flipping
     end
 
     def text
