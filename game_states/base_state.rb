@@ -6,19 +6,17 @@ class BaseState < Chingu::GameState
 
     @level = options[:level]
     @rows = options[:rows]
-    @columns = options[:columns]
+    @columns = options[:columns] 
+    @letters = options[:letters]
 
-    for i in 1..@rows
-      for j in 1..@columns
-        xPos = j*90
-        yPos = i*90
+    for i in 0...@rows
+      for j in 0...@columns
+        margin = 50
+        xPos = j*90 + margin
+        yPos = i*90 + margin
 
-        Block.create(:x => xPos, :y => yPos, :show_letters => options[:show_letters])
+        Block.create(:x => xPos, :y => yPos, :letter => @letters[i][j] , :show_letters => options[:show_letters])
       end
     end
-  end
-
-  def update
-    super
   end
 end

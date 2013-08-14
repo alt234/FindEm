@@ -9,29 +9,23 @@ class Block < Chingu::GameObject
     @animation.frame_names = { :flip => 0..4 }
     @image = @animation.first
 
-    if options[:show_letters]
-      @letter = ["A", "B", "C", "D"].sample
+    @letter = options[:letter]
 
+    if options[:show_letters]
       @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE, :zorder => 1000)
       @text.factor_x = 1
       @text.factor_y = 1
       @flipped = true
     end
-
-    update
   end
 
   def released_left_mouse_button
     if $window.mouse_x >= (self.x - self.width/2) && $window.mouse_x <= (self.x + self.width/2) &&
       $window.mouse_y >= (self.y - self.height/2) && $window.mouse_y <= (self.y + self.height/2)
-      if !@review_ended then return end
+      if !$game_started then return end
 
       @flipping = true
       @flipped = false
-
-      unless $game_started
-        $game_started = true
-      end
     end
   end
 
@@ -52,18 +46,6 @@ class Block < Chingu::GameObject
         @text.factor_y = 1
         @flipped = true 
       end
-
-      #unless @review_ended
-      #all_hidden = true
-      #Block.all.each do |block|
-      #   if block.is_flipped?
-      #      all_hidden = false
-      #     break
-      # end
-      #end
-
-      #    if all_hidden then @review_ended = true end
-      #end
     end
   end
 
