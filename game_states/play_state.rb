@@ -37,6 +37,7 @@ class PlayState < BaseState
 
   def start_turn 
     @first_block = nil
+    $game_started = false
     Block.all.each { |block| block.destroy! }
 
     level = @level+1
@@ -45,6 +46,7 @@ class PlayState < BaseState
 
     if level % 2 == 0 then columns += 1 else rows += 1 end	
 
+    pop_game_state(:setup => false, :finalize => :false)
     push_game_state(ReviewState.new(:level => level, :rows => rows, :columns => columns))
   end
 

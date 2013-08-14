@@ -43,6 +43,7 @@ class ReviewState < BaseState
     end
 
     if all_hidden 
+      pop_game_state(:setup => false, :finalize => :false)
       push_game_state(PlayState.new(:level => @level, :rows => @rows, :columns => @columns, :letters => @letters, :show_letters => false))
     end
   end
