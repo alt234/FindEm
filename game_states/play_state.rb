@@ -1,3 +1,5 @@
+require './game_states/win_state.rb'
+
 class PlayState < BaseState 
   def initialize(options = {})
     super(options)
@@ -47,7 +49,12 @@ class PlayState < BaseState
     if level % 2 == 0 then columns += 1 else rows += 1 end	
 
     pop_game_state(:setup => false, :finalize => :false)
-    push_game_state(ReviewState.new(:level => level, :rows => rows, :columns => columns))
+    
+    if level <= 10
+      push_game_state(ReviewState.new(:level => level, :rows => rows, :columns => columns))
+    else
+      push_game_state(WinState.new)
+    end
   end
 
   def end_turn
