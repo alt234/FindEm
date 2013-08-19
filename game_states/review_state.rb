@@ -21,7 +21,6 @@ class ReviewState < BaseState
 
     super(options)
 
-    review_time = 2250;
     review_time = 1000 + 500 * @level
     Block.all.each do |block|
       during(review_time) {}.then do

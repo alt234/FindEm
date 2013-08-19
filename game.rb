@@ -11,7 +11,7 @@ require './game_objects/reset_button.rb'
 
 class Game < Chingu::Window
   def initialize
-    super
+    super(1024, 768)
     retrofy
     @factor = 3
     @input = { :escape => :exit }
@@ -23,7 +23,7 @@ class Game < Chingu::Window
   def draw
     super
 
-    @cursor.draw(self.mouse_x, self.mouse_y, 100)
+    @cursor.draw(self.mouse_x, self.mouse_y, 102)
   end
 
   def needs_cursor?

@@ -4,7 +4,7 @@ class PlayState < BaseState
   def initialize(options = {})
     super(options)
 
-    puts "GameState: Play"
+    #puts "GameState: Play"
     puts "Level: #{ @level }"
 
     $game_started = true
@@ -61,7 +61,7 @@ class PlayState < BaseState
   end
 
   def end_turn
-    return if @first_block.nil?
+    return if @first_block.nil? || @turn_ended
 
     @correct_blocks = 0
     @incorrect_blocks = 0
@@ -86,12 +86,10 @@ class PlayState < BaseState
       end
     end
 
-    #@unflipped_blocks.each do |block|
-    #  puts block.letter
-    #end
-
-    Text.create("Correct: #{@correct_blocks}", :size => 12, :x => 500, :y => 50)
-    Text.create("Incorrect: #{@incorrect_blocks}", :size => 12, :x => 500, :y => 70)
-    Text.create("Missed: #{@missed_blocks}", :size => 12, :x => 500, :y => 90) 
+    Text.create("Correct: #{@correct_blocks}", :size => 40, :factor_x => 1, :factor_y => 1, :x => 800, :y => 10, :align => :right)
+    Text.create("Incorrect: #{@incorrect_blocks}", :size => 40, :factor_x => 1, :factor_y => 1, :x => 800, :y => 50, :align => :right)
+    Text.create("Missed: #{@missed_blocks}", :size => 40, :factor_x => 1, :factor_y => 1, :x => 800, :y => 90, :align => :right) 
+  
+    @turn_ended = true
   end
 end

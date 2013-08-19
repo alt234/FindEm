@@ -12,9 +12,7 @@ class Block < Chingu::GameObject
     @letter = options[:letter]
 
     if options[:show_letters]
-      @text = Text.create(@letter, :size => 40, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE, :zorder => 1000)
-      @text.factor_x = 1
-      @text.factor_y = 1
+      @text = Text.create(@letter, :size => 40, :factor_x => 1, :factor_y => 1, :x => self.x - self.width/4 + 4, :y => self.y - self.height/4 + 4, :color => Color::WHITE, :zorder => 101)
       @flipped = true
     end
   end

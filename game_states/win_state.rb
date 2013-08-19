@@ -6,7 +6,7 @@ class WinState < Chingu::GameState
 
     self.input = [:e => :new_game]
 
-    Text.create("You Win!", :size => 40, :x => 10, :y => 10)
+    Text.create("You Win!", :size => 40, :factor_x => 1, :factor_y => 1, :x => 10, :y => 10)
   end
 
   def new_game
