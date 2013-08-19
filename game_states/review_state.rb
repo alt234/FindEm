@@ -21,7 +21,7 @@ class ReviewState < BaseState
 
     super(options)
 
-    #review_time = 2250;
+    review_time = 2250;
     review_time = 1000 + 500 * @level
     Block.all.each do |block|
       during(review_time) {}.then do
@@ -43,8 +43,12 @@ class ReviewState < BaseState
     end
 
     if all_hidden 
-      pop_game_state(:setup => false, :finalize => :false)
+      pop_game_state()
       push_game_state(PlayState.new(:level => @level, :rows => @rows, :columns => @columns, :letters => @letters, :show_letters => false))
     end
+  end
+
+  def finalize
+    Block.all.each { |block| block.destroy! }
   end
 end

@@ -68,4 +68,8 @@ class Block < Chingu::GameObject
   def text
     @text
   end
+
+  def letter
+    @letter
+  end
 end

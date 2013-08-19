@@ -22,7 +22,7 @@ class PlayState < BaseState
       Block.all.each do |block|
         if block.is_flipped?
           @first_block = block
-          puts "First block: #{ @first_block.text.text }"
+          #puts "First block: #{ @first_block.text.text }"
         end
       end
     end
@@ -31,6 +31,7 @@ class PlayState < BaseState
       @unflipped_blocks.each do |block|
         if block.is_flipped? && block.text.text == @first_block.text.text
           block.text.color = Color::YELLOW
+          @missed_blocks += 1
           @unflipped_blocks.delete(block)
         end
       end
@@ -38,18 +39,14 @@ class PlayState < BaseState
   end
 
   def start_turn 
-    @first_block = nil
-    $game_started = false
-    Block.all.each { |block| block.destroy! }
-
     level = @level+1
     rows = @rows
     columns = @columns
 
     if level % 2 == 0 then columns += 1 else rows += 1 end	
 
-    pop_game_state(:setup => false, :finalize => :false)
-    
+    pop_game_state()
+
     if level <= 10
       push_game_state(ReviewState.new(:level => level, :rows => rows, :columns => columns))
     else
@@ -57,21 +54,44 @@ class PlayState < BaseState
     end
   end
 
+  def finalize
+    @first_block = nil
+    $game_started = false
+    Block.all.each { |block| block.destroy! }
+  end
+
   def end_turn
     return if @first_block.nil?
-    
+
+    @correct_blocks = 0
+    @incorrect_blocks = 0
+    @missed_blocks = 0
+
     @unflipped_blocks = []
     Block.all.each do |block|
       if !block.is_flipped?
         @unflipped_blocks << block
         block.flipping = true
+        if block.letter == @first_block.letter 
+          @missed_blocks += 1 
+        end
       else
         if block.text.text == @first_block.text.text
           block.text.color = Color::BLUE
+          @correct_blocks += 1
         else
           block.text.color = Color::RED
+          @incorrect_blocks += 1
         end
       end
     end
+
+    #@unflipped_blocks.each do |block|
+    #  puts block.letter
+    #end
+
+    Text.create("Correct: #{@correct_blocks}", :size => 12, :x => 500, :y => 50)
+    Text.create("Incorrect: #{@incorrect_blocks}", :size => 12, :x => 500, :y => 70)
+    Text.create("Missed: #{@missed_blocks}", :size => 12, :x => 500, :y => 90) 
   end
 end
